@@ -3,24 +3,27 @@ var connection = require("./connection.js");
 // ORM //
 
 var orm = {
-	all: function(tableInput, colToSearch, valOfCol) {
-		var queryString = "SELECT * FROM ?? WHERE ?? = ?";
-		connection.query(queryString, [tableInput, colToSearch, valOfCol], function(err, result){
-			console.log(result);
-		});
+	all: function(tableInput, cb) {
+		connection.query("SELECT * FROM "+tableInput+";", function(err, result){
+			if(err) throw err;
+			cd(result);
+		})
 	},	
 
-	insert: function(tableInput, colToSearch, valOfCol) {
-		var queryString = "INSERT * INTO ?? WHERE ?? = ?";
-		connection.query(queryString, [tableInput, colToSearch, valOfCol], function(err, result){
+	update: function(tableInput, condition, cb) {
+		connection.query("UPDATE "+tableInput+ "SET devoured=true WHERE id="+condition+ ";",function(err, result){
 			console.log(result);
-		});
+			if(err) throw err;
+			cd(result);
+
+		})
 	},	
-	update: function(tableInput, colToSearch, valOfCol) {
-		var queryString = "PUT * INTO ?? WHERE ?? = ?";
-		connection.query(queryString, [tableInput, colToSearch, valOfCol], function(err, result){
+	create: function(tableInput, val, result) {
+		connection.query("INSERT INTO"+tableInput+" (burger_name) VALUES ("+val+");", function(err, result){
 			console.log(result);
-		});
+			if(err) throw err;
+			cb(result);
+		})
 	}
 
 
